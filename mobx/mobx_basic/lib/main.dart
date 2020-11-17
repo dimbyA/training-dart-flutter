@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx_basic/src/providers/stores_provider.dart';
+import 'package:mobx_basic/src/widgets/counter_info.dart';
+import 'package:mobx_basic/src/widgets/increment_button.dart';
 
-import 'counter.dart'; // Import the Counter
+import 'src/stores/counter.dart'; // Import the Counter
 
 final counter = Counter(); // Instantiate the store
 
@@ -12,13 +14,15 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MobX Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return StoresProvider(
+          child: MaterialApp(
+        title: 'MobX Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: MyHomePage(title: 'Mobx Counter'),
       ),
-      home: MyHomePage(title: 'Mobx Counter'),
     );
   }
 }
@@ -33,28 +37,8 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            // Wrapping in the Observer will automatically re-render on changes to counter.value
-            Observer(
-              builder: (_) => Text(
-                '${counter.value}',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: counter.increment,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+      body: CounterInfo(),
+      floatingActionButton: IncrementFloatingActionButton(),
     );
   }
 }
